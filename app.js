@@ -1,34 +1,18 @@
 const express = require('express');
-const mysql = require('mysql');
+const con = require('./modules/connectSQL');
 const bodyParser = require('body-parser');
-const port = 8000;
-const routes = require('./routes/routes');
-const rt = require('./routes/personroutes');
+const port = 3000;
 const app = express();
-
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "123456",
-    database: "gateway",
-    timeout: 100000
-});
+const userRoute = require('./routes/user');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true,
 }));
 
-routes(app);
-rt(app);
-
-con.connect(err=>{
-    if(err) throw err;
-    console.log("Ket noi thanh cong !");
-})
-
-app.get('/user', (request, response) => {
+/*app.get('/user', (request, response) => {
     let ID = request.query.id;
+
     let rd;
     let sql = "SELECT * FROM user WHERE id = ?";
     con.query(sql, [ID], (err, result) =>{
@@ -38,6 +22,21 @@ app.get('/user', (request, response) => {
     });
 });
 
+app.post("/user",(req,res)=>{
+    console.log("");
+    let sql = "INSERT INTO user (username , password)" +
+        "VALUES (?,?)";
+
+    con.query(sql,[req.body.username, req.body.password],(err, result)=>{
+        if(err) throw err;
+        res.send("INSERT OK");
+        res.end();
+    })
+})*/
+
+
+userRoute(app);
+
 app.listen(port, (error) => {
     let d = new Date();
     console.log("Build success: " + d.toTimeString());
@@ -45,3 +44,4 @@ app.listen(port, (error) => {
         console.log("Đã có lỗi xảy ra");
     }
 });
+
