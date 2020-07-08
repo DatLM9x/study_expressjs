@@ -7,14 +7,16 @@ exports.getbyid = (req, res) => {
             res.status(404).send("ERROR");
             return;
         }
-        conn.query('SELECT * FROM user WHERE ID = ?', [id], (error, rows) => {
-            if (error || jsonUtil.isEmptyJson(rows)) {
+        conn.query('SELECT * FROM user WHERE ID = ?', [id], (error, result, fields) => {
+            if (error || jsonUtil.isEmptyJson(result)) {
                 console.log(error);
                 res.status(403).json({'message': error});
             } else {
-                res.status(200).send(rows);
+                console.log("BBBBBBBBBBBBBBBBBBBB");
+                res.status(200).send(result);
             }
-        })
+        });
+        console.log("AAAAAAAAAAAAAAAAAAAAA");
     });
 }
 

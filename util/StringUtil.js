@@ -1,5 +1,5 @@
 module.exports = {
-    isEmpty: (str) => {
-        return (!str || 0 === str.length || str == undefined || str == null)
+    isEmptyString: (str) => {
+        return (!str || 0 === str.trim().length || str == undefined || str == null)
     }
 };
